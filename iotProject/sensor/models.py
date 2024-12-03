@@ -11,3 +11,9 @@ class RadarSensor(models.Model):
 	direction = models.TimeField(choices=RadarSensorDirection.choices)
 	echo_cm = models.FloatField()
 	created_at = models.DateTimeField()
+
+
+class Seat(models.Model):
+	seat_number = models.IntegerField()
+	occupied = models.BooleanField(default=False)
+	created_at = models.DateTimeField()
