@@ -13,3 +13,6 @@ class Seat(models.Model):
     x = models.IntegerField()
     y = models.IntegerField()
     occupied = models.BooleanField(default=False)
+
+    class Meta:
+        unique_together = ('x', 'y')
