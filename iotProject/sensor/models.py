@@ -6,7 +6,7 @@ class RadarSensor(models.Model):
     y = models.IntegerField()
     model = models.CharField(default='HC-SR04', max_length=20)
     echo_cm = models.FloatField()
-    timestamp = models.DateTimeField()
+    timestamp = models.DateTimeField(auto_now_add=True)
 
 
 class Seat(models.Model):
