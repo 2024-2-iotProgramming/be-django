@@ -40,6 +40,8 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
     'corsheaders',
+    "drf_yasg",
+    "rest_framework",
 ]
 
 MIDDLEWARE = [
@@ -136,4 +138,3 @@ DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 # ]
 # 모든 Origin 추가
 CORS_ORIGIN_ALLOW_ALL = True
-
