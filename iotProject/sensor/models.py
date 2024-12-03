@@ -1,43 +1,13 @@
 from django.db import models
-from django.utils import timezone
 
-# 온도 센서 테이블
-class TemperatureSensor(models.Model):
-	reg_date = models.DateTimeField(editable=False)
-	value = models.FloatField()
-	def save(self, *args, **kwargs):
-		if not self.id:
-			self.reg_date = timezone.now()
-		return super(TemperatureSensor, self).save(*args, **kwargs)
 
-# 습도 센서 테이블
-class HumiditySensor(models.Model):
-	reg_date = models.DateTimeField(editable=False)
-	value = models.FloatField()
+class RadarSensorDirection(models.TextChoices):
+	Y_POS = '+y'
+	Y_NEG = '-y'
 
-	def save(self, *args, **kwargs):
-		if not self.id:
-			self.reg_date = timezone.now()
-		return super(HumiditySensor, self).save(*args, **kwargs)
 
-# 진동 센서 테이블
-class VibratorSensor(models.Model):
-	reg_date = models.DateTimeField(editable=False)
-	value = models.BooleanField()
-
-	def save(self, *args, **kwargs):
-		if not self.id:
-			self.reg_date = timezone.now()
-		return super(LightSensor, self).save(*args, **kwargs)
-
-# 근접 센서 테이블
-class ProximitySensor(models.Model):
-	reg_date = models.DateTimeField(editable=False)
-	value = models.FloatField()
-
-	def save(self, *args, **kwargs):
-		if not self.id:
-			self.reg_date = timezone.now()
-		return super(ProximitySensor, self).save(*args, **kwargs)
-
-# Create your models here.
+class RadarSensor(models.Model):
+	model = models.CharField(default='HC-SR04', max_length=20)
+	direction = models.TimeField(choices=RadarSensorDirection.choices)
+	echo_cm = models.FloatField()
+	created_at = models.DateTimeField()
