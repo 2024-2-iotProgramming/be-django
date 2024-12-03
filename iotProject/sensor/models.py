@@ -16,4 +16,3 @@ class RadarSensor(models.Model):
 class Seat(models.Model):
 	seat_number = models.IntegerField()
 	occupied = models.BooleanField(default=False)
-	created_at = models.DateTimeField()
