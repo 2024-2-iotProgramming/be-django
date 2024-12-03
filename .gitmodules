@@ -1,0 +1,4 @@
+[submodule "iotProject/data-collector"]
+	path = iotProject/data-collector
+	url = https://github.com/2024-2-iotProgramming/data-collector
+	branch = main
