@@ -8,13 +8,13 @@ from . import models
 class RadarSensorSerializer(serializers.ModelSerializer):
     class Meta:
         model = models.RadarSensor
-        fields = '__all__'
+        exclude = ('id',)
 
 
 class SeatSerializer(serializers.ModelSerializer):
     class Meta:
         model = models.Seat
-        fields = '__all__'
+        exclude = ('id',)
 
 
 class RadorSensorCreateThrottle(throttling.SimpleRateThrottle):
