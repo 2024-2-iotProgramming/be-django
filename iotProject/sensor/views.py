@@ -26,11 +26,11 @@ class RadorSensorCreateThrottle(throttling.SimpleRateThrottle):
 
 
 class RadarSensorListCreate(generics.ListCreateAPIView):
-    queryset = models.RadarSensor
+    queryset = models.RadarSensor.objects.all()
     serializer_class = RadarSensorSerializer
     throttle_classes = [RadorSensorCreateThrottle]
 
 
 class SeatList(generics.ListAPIView):
-    queryset = models.Seat
+    queryset = models.Seat.objects.all()
     serializer_class = SeatSerializer
