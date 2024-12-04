@@ -8,7 +8,7 @@ class SeatXChoices(models.IntegerChoices):
 
 
 SEAT_RADAR_MULTIPLIER = 28  # ~번 측정 = 1석
-SEAT_RADAR_THRESHOLD = 2  # 한 좌석에 ~번 이상 측정되면 해당 좌석은 착석으로 판단
+SEAT_OCCUPATION_RATE_THRESHOLD = 0.4  # 한 좌석에 ~% 이상 측정되면 해당 좌석은 착석으로 판단
 RADAR_ECHO_OCCUPIED_THRESHOLD = 90.0  # cm
 
 
@@ -24,16 +24,19 @@ class Seat(models.Model):
 
     @admin.display(boolean=True)
     def is_occupied(self) -> bool:
+        return self.occupied_rate() >= SEAT_OCCUPATION_RATE_THRESHOLD
+
+    @admin.display()
+    def occupied_rate(self) -> float:
         # TODO: 당장 이 방식은 시간복잡도가 박살났지만, 좌석 수가 적으니 일단 강행하자.
         sy = SEAT_RADAR_MULTIPLIER*self.y
         ey = SEAT_RADAR_MULTIPLIER*(self.y+1)
-        th = SEAT_RADAR_THRESHOLD
+        occupied = 0
         for y in range(sy, ey):
             queryset = RadarSensor.objects.filter(x=self.x, y=y)
             if queryset.exists() and queryset.latest().is_occupied:
-                if (th := th - 1) <= 0:
-                    return True
-        return False
+                occupied += 1
+        return occupied / SEAT_RADAR_MULTIPLIER
 
 
 class RadarSensor(models.Model):
@@ -58,4 +61,4 @@ class RadarSensor(models.Model):
             Seat.objects.create(**seats_kwargs)
 
     class Meta:
-        get_latest_by = ('-timestamp',)
+        get_latest_by = ('timestamp',)
