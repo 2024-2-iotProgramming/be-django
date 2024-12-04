@@ -7,7 +7,8 @@ class SeatXChoices(models.IntegerChoices):
     X1 = 1
 
 
-SEAT_RADAR_MULTIPLIER = 28  # 20번 측정 = 1석
+SEAT_RADAR_MULTIPLIER = 28  # ~번 측정 = 1석
+SEAT_RADAR_THRESHOLD = 2  # 한 좌석에 ~번 이상 측정되면 해당 좌석은 착석으로 판단
 RADAR_ECHO_OCCUPIED_THRESHOLD = 90.0  # cm
 
 
@@ -26,10 +27,12 @@ class Seat(models.Model):
         # TODO: 당장 이 방식은 시간복잡도가 박살났지만, 좌석 수가 적으니 일단 강행하자.
         sy = SEAT_RADAR_MULTIPLIER*self.y
         ey = SEAT_RADAR_MULTIPLIER*(self.y+1)
+        th = SEAT_RADAR_THRESHOLD
         for y in range(sy, ey):
             queryset = RadarSensor.objects.filter(x=self.x, y=y)
             if queryset.exists() and queryset.latest().is_occupied:
-                return True
+                if (th := th - 1) <= 0:
+                    return True
         return False
 
 
