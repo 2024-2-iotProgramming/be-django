@@ -2,6 +2,9 @@
 
 ```shell
 # be-django 폴더 안에서 다음의 명령을 수행
+git stash
+git pull
+git stash pop
 pip install -r requirements.txt
 git submodule init
 git submodule update --remote
