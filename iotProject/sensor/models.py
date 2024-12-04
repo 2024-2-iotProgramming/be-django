@@ -10,7 +10,7 @@ class SeatXChoices(models.IntegerChoices):
 class Seat(models.Model):
     x = models.IntegerField(choices=SeatXChoices.choices)
     y = models.IntegerField()
-    occupied = models.BooleanField(default=False)
+    occupied = models.BooleanField()
 
     class Meta:
         unique_together = ('x', 'y')
@@ -26,17 +26,16 @@ class RadarSensor(models.Model):
     echo_cm = models.FloatField()
     timestamp = models.DateTimeField(auto_now_add=True)
 
-    @property
     @admin.display(boolean=True)
     def occupied(self) -> bool:
         return self.echo_cm < 90.0
 
-    @property
     @admin.display()
     def seat(self) -> Seat:
         return Seat.objects.get_or_create(x=self.x, y=self.y)[0]
 
     def save(self, *args, **kwargs) -> None:
-        self.seat.occupied = self.occupied
-        self.seat.save()
-        return super().save(*args, **kwargs)
+        super().save(*args, **kwargs)
+        obj: Seat = self.seat()
+        obj.occupied = self.occupied()
+        obj.save()
