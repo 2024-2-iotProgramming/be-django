@@ -5,7 +5,7 @@ from . import models
 
 @admin.register(models.RadarSensor)
 class ModelAdmin(admin.ModelAdmin):
-    list_display = ('seat', 'occupied', 'model', 'echo_cm', 'timestamp')
+    list_display = ('is_occupied', 'model', 'echo_cm', 'timestamp')
     search_fields = ('x', 'y')
     list_per_page = 100
     list_max_show_all = 1000
@@ -13,8 +13,8 @@ class ModelAdmin(admin.ModelAdmin):
 
 @admin.register(models.Seat)
 class ModelAdmin(admin.ModelAdmin):
-    list_display = ('x', 'y', 'occupied')
-    list_filter = ('occupied',)
+    list_display = ('x', 'y', 'is_occupied')
+    list_filter =  ('x', 'y')
     search_fields = ('x', 'y')
     list_per_page = 100
     list_max_show_all = 1000

@@ -12,9 +12,14 @@ class RadarSensorSerializer(serializers.ModelSerializer):
 
 
 class SeatSerializer(serializers.ModelSerializer):
+    is_occupied = serializers.SerializerMethodField()
+
     class Meta:
         model = models.Seat
         exclude = ('id',)
+
+    def get_is_occupied(self, obj: models.Seat) -> bool:
+        return obj.is_occupied()
 
 
 class RadorSensorCreateThrottle(throttling.SimpleRateThrottle):
